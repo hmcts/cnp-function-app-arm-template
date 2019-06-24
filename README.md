@@ -1,0 +1,1 @@
+# cnp-function-app-arm-template
