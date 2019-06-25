@@ -33,6 +33,32 @@
           "description": "Environment short name used for resource group allocation"
         }
       },
+      "ipSecurityRestrictionAction": {
+        "type": "string",
+        "defaultValue": "allow",
+        "metadata": {
+          "description": "Allow or Deny Rule"
+        }
+      },
+      "ipSecurityRestrictionPriority": {
+        "type": "int",
+        "defaultValue": "100",
+        "metadata": {
+          "description": "Rule Priority"
+        }
+      },
+      "ipSecurityRestrictionName": {
+        "type": "string",
+        "metadata": {
+          "description": "Rule Name"
+        }
+      },
+      "ipSecurityRestrictionDescription": {
+        "type": "string",
+        "metadata": {
+          "description": "Rule Description"
+        }
+      },
       "branch": {
         "type": "string",
         "defaultValue": "Unknown",
@@ -202,10 +228,10 @@
           "ipSecurityRestrictions": [
             {
               "vnetSubnetResourceId": "[variables('SubnetResourceId')]",
-              "action": "allow",
-              "priority": "100",
-              "name": "Allow-APIM",
-              "description": "Allow APIM to talk to FunctionApp"
+              "action": "[parameters('ipSecurityRestrictionAction')]",
+              "priority": "[parameters('ipSecurityRestrictionPriority')]",
+              "name": "[parameters('ipSecurityRestrictionName')]",
+              "description": "[parameters('ipSecurityRestrictionDescription')]"
             }
           ]
         }
