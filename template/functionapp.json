@@ -27,6 +27,38 @@
       "environmentName": {
         "type": "string"
       },
+      "shortName": {
+        "type": "string",
+        "metadata": {
+          "description": "Environment short name used for resource group allocation"
+        }
+      },
+      "ipSecurityRestrictionAction": {
+        "type": "string",
+        "defaultValue": "allow",
+        "metadata": {
+          "description": "Allow or Deny Rule"
+        }
+      },
+      "ipSecurityRestrictionPriority": {
+        "type": "int",
+        "defaultValue": "100",
+        "metadata": {
+          "description": "Rule Priority"
+        }
+      },
+      "ipSecurityRestrictionName": {
+        "type": "string",
+        "metadata": {
+          "description": "Rule Name"
+        }
+      },
+      "ipSecurityRestrictionDescription": {
+        "type": "string",
+        "metadata": {
+          "description": "Rule Description"
+        }
+      },
       "branch": {
         "type": "string",
         "defaultValue": "Unknown",
@@ -64,7 +96,11 @@
       "hostingPlanName": "[parameters('appName')]",
       "storageAccountName": "[concat('fn', parameters('appName'),parameters('environmentName'))]",
       "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', variables('storageAccountName'))]",
-      "functionWorkerRuntime": "[parameters('runtime')]"
+      "functionWorkerRuntime": "[parameters('runtime')]",
+      "VirtualNetworkResourceGroup": "[concat('core-infra-',parameters('shortName'))]",
+      "VirtualNetworkName": "[concat('core-infra-vnet-',parameters('shortName'))]",
+      "VirtualNetworkSubnetName": "[concat('core-infra-subnet-apimgmt-',parameters('shortName'))]",
+      "SubnetResourceId": "[resourceId(variables('VirtualNetworkResourceGroup'),'Microsoft.Network/virtualNetworks/subnets',variables('VirtualNetworkName'),variables('VirtualNetworkSubnetName'))]"
     },
     "resources": [
       {
@@ -178,6 +214,26 @@
                 }
             ]
           }
+        }
+      },
+      {
+        "name": "[concat(variables('functionAppName'), '/web')]",
+        "type": "Microsoft.Web/sites/config",
+        "apiVersion": "2018-11-01",
+        "kind": "functionapp",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+        ],
+        "properties": {
+          "ipSecurityRestrictions": [
+            {
+              "vnetSubnetResourceId": "[variables('SubnetResourceId')]",
+              "action": "[parameters('ipSecurityRestrictionAction')]",
+              "priority": "[parameters('ipSecurityRestrictionPriority')]",
+              "name": "[parameters('ipSecurityRestrictionName')]",
+              "description": "[parameters('ipSecurityRestrictionDescription')]"
+            }
+          ]
         }
       }
     ]
