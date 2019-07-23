@@ -124,7 +124,8 @@
       "VirtualNetworkResourceGroup": "[concat('core-infra-',parameters('shortName'))]",
       "VirtualNetworkName": "[concat('core-infra-vnet-',parameters('shortName'))]",
       "VirtualNetworkSubnetName": "[concat('core-infra-subnet-apimgmt-',parameters('shortName'))]",
-      "SubnetResourceId": "[resourceId(parameters('vNetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets',parameters('vNetName'),parameters('vNetSubnetName'))]"
+      "SubnetResourceId": "[resourceId(parameters('vNetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets',parameters('vNetName'),parameters('vNetSubnetName'))]",
+      "siteName": "[parameters('appName')]"
 
     },
     "resources": [
