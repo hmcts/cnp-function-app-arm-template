@@ -8,6 +8,18 @@
           "description": "The name of the function app that you wish to create."
         }
       },
+      "vNetResourceGroup": {
+        "type": "string",
+        "defaultValue": "core-infra-*"
+      },
+      "vNetName": {
+        "type": "string",
+        "defaultValue": "core-infra-vnet-*"
+      },
+      "vNetSubnetName": {
+        "type": "string",
+        "defaultValue": "core-infra-subnet-apimgmt-*"
+      },
       "storageAccountType": {
         "type": "string",
         "defaultValue": "Standard_LRS",
@@ -100,7 +112,8 @@
       "VirtualNetworkResourceGroup": "[concat('core-infra-',parameters('shortName'))]",
       "VirtualNetworkName": "[concat('core-infra-vnet-',parameters('shortName'))]",
       "VirtualNetworkSubnetName": "[concat('core-infra-subnet-apimgmt-',parameters('shortName'))]",
-      "SubnetResourceId": "[resourceId(variables('VirtualNetworkResourceGroup'),'Microsoft.Network/virtualNetworks/subnets',variables('VirtualNetworkName'),variables('VirtualNetworkSubnetName'))]"
+      "SubnetResourceId": "[resourceId(parameters('vNetResourceGroup'),'Microsoft.Network/virtualNetworks/subnets',parameters('vNetName'),parameters('vNetSubnetName'))]"
+
     },
     "resources": [
       {
