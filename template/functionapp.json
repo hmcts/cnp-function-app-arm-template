@@ -71,6 +71,18 @@
           "description": "Rule Description"
         }
       },
+      "repoURL": {
+        "type": "string",
+        "metadata": {
+          "description": "FunctionApp Repo"
+        }
+      },
+      "repoBranch": {
+        "type": "string",
+        "metadata": {
+          "description": "FunctionApp Default Repo Branch"
+        }
+      },
       "branch": {
         "type": "string",
         "defaultValue": "Unknown",
@@ -244,6 +256,19 @@
               "description": "[parameters('ipSecurityRestrictionDescription')]"
             }
           ]
+        }
+      },
+      {
+        "apiVersion": "2015-08-01",
+        "name": "web",
+        "type": "sourcecontrols",
+        "dependsOn": [
+          "[resourceId('Microsoft.Web/Sites', variables('functionAppName'))]"
+        ],
+        "properties": {
+          "RepoUrl": "[parameters('repoURL')]",
+          "branch": "[parameters('repobranch')]",
+          "IsManualIntegration": true
         }
       }
     ]
